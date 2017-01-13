@@ -1,0 +1,76 @@
+
+
+
+<div style="padding:0;" class="user-box" id="box{{text.z_index}}front" ng-style="text.type=='svg' && {'top':'30px','left':'30px'}  || text.type=='text' && {'top':'136px','left':'67px'} || text.type=='img' && {'top':'30px','left':'30px'}"	on-drag-end="dragendfunc(rotation)" on-drag="dragfunc(rotation)" style="-webkit-user-select: none;">
+                                           
+	<svg ng-if="text.type=='text'" xmlns="http://www.w3.org/2000/svg" width="80" height="40" preserveAspectRatio="none">
+		<g id="2.34">
+			<text y="15" fill="{{text.color}}" ng-if="text.type=='text'" ng-click="selectTextFunc(text.z_index,$event)" ng-style="{'font-family':text.font}"
+				font-size="24px">
+				<tspan x="-0.001953125" y="0" dy="22"> {{text.text}} </tspan>
+			</text>
+		</g>
+	</svg>
+
+	<svg ng-if="text.type=='svg'" xmlns="http://www.w3.org/2000/svg" ng-height="{{text.height}}"
+		ng-width="{{text.width}}" preserveAspectRatio="none">
+		<defs>
+			<clipPath id="cut-off-bottom">
+				<rect x="0" y="0" width="220" height="330" />
+			</clipPath>
+		</defs>
+		<g id="global" clip-path="url(#cut-off-bottom)">
+
+
+
+			<image ng-click="selectTextFunc(text.z_index,$event)" xlink:href={{maskimageurl}} x="0" y="20" ng-height="{{text.height}}"
+				ng-width="{{text.width}}" />
+		</g>
+	</svg>
+
+	<svg class="svgimg" ng-show="text.type=='img'" preserveAspectRatio="none"   ng-height="{{text.svgheight}}"
+		ng-width="{{text.svgwidth}}"
+		 xmlns="http://www.w3.org/2000/svg" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g>
+			<image ng-click="selectTextFunc(text.z_index,$event)" x="0" y="0" ng-height="{{text.height}}"
+				ng-width="{{text.width}}"  xlink:href={{maskimageurl}}></image>
+		</g>
+	</svg>
+
+	<ul tw-click-outside="deselectlayerfunc()" class="user-list" id="tools{{text.z_index}}front" style="visibility:hidden">
+		<li class="zoom">
+			<a href="" class="icon">
+				<i class="icon-expand-01" id="resize{{text.z_index}}front"></i>
+			</a>
+			<span class="popup">Resize</span>
+		</li>
+		<li class="drag">
+			<a href="" class="icon">
+				<i class="icon-drag-01"></i>
+			</a>
+			<span class="popup">Drag</span>
+		</li>
+		<li class="rotate">
+			<a href="" class="icon">
+				<i class="icon-rotate-free"></i>
+			</a>
+			<span class="popup">Rotate</span>
+		</li>
+		<li class="delete">
+			<a href="" class="icon" ng-click="deletelayerfunc(text.z_index)">
+				<i class="icon-trash-01"></i>
+
+			</a>
+			<span class="popup">Delete</span>
+		</li>
+	</ul>
+
+
+
+	<ul class="handler" style="visibility:hidden">
+		<li class="first"></li>
+		<li class="second"></li>
+		<li class="third"></li>
+		<li class="four"></li>
+	</ul>
+</div>

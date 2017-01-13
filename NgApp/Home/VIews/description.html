@@ -1,0 +1,515 @@
+<main id="main" role="main" class="animated lightSpeedIn">
+
+	<div class="container">
+		<div class="goal-block">
+			<div class="shirt-info">
+				<div class="shirt-tabs tabs">
+					<div class="paging-area">
+                        <ul class="tabset shirt-tabset" style=" margin-left: 30%;">
+                            <li ng-if="(vm.selectedShirt.front == 1)" style="height: 17vh;">
+                                <a href="" ng-class="{'active': vm.default_tab == 1}" ng-click="vm.activate_tab(1)">
+                                    <img image-spinner ng-src="{{vm.imageURL}}{{vm.selectedShirSide.front}}" width="48" height="60" alt="image description">
+                                </a>
+                            </li>
+                            <li ng-if="(vm.selectedShirt.back == 1)" style="height: 17vh;">
+                                <a href="" ng-class="{'active': vm.default_tab == 2}" ng-click="vm.activate_tab(2)">
+                                    <img image-spinner ng-src="{{vm.imageURL}}{{vm.selectedShirSide.back}}" width="48" height="60" alt="image description">
+                                </a>
+                            </li>
+                            <li ng-show="vm.isSleeve" ng-if="(vm.selectedShirt.left == 1)" style="height: 17vh;">
+                                <a href="" ng-class="{'active': vm.default_tab == 3}" ng-click="vm.activate_tab(3)">
+                                    <img image-spinner ng-src="{{vm.imageURL}}{{vm.selectedShirSide.left}}" width="40" height="40" alt="image description">
+                                </a>
+                            </li>
+                            <li ng-show="vm.isSleeve" ng-if="(vm.selectedShirt.right == 1)" style="height: 17vh;">
+                                <a href="" ng-class="{'active': vm.default_tab == 4}" ng-click="vm.activate_tab(4)">
+                                    <img image-spinner ng-src="{{vm.imageURL}}{{vm.selectedShirSide.right}}" width="40" height="40" alt="image description">
+                                </a>
+                            </li>
+                        </ul>
+
+												<div class="shirt-box">
+														<div class="shirt-view" style="margin-bottom:100px;">
+																<div class="tab-content">
+																		<div id="tab1" ng-if="vm.default_tab==1">
+																				<div class="shirt-picture">
+																						<img image-spinner ng-src={{vm.imageURL}}{{vm.selectedShirt.image_front_url}} ng-style="{'background':vm.shirt_color}" width="{{vm.selectedShirt.width}}" height="{{vm.selectedShirt.height}}" alt="image description">
+																				</div>
+																		</div>
+																		<div id="tab2" ng-if="vm.default_tab==2">
+																				<div class="shirt-picture">
+																						<img image-spinner ng-src={{vm.imageURL}}{{vm.selectedShirt.image_back_url}} width="{{vm.selectedShirt.width}}" height="{{vm.selectedShirt.height}}" ng-style="{'background':vm.shirt_color}" alt="image description">
+																				</div>
+																		</div>
+																		<div id="tab3" ng-if="vm.default_tab==3">
+																				<div class="shirt-picture">
+																						<img image-spinner ng-src={{vm.imageURL}}{{vm.selectedShirt.image_left_url}} width="{{vm.selectedShirt.width}}" height="{{vm.selectedShirt.height}}" ng-style="{'background':vm.shirt_color}" alt="image description">
+																				</div>
+																		</div>
+																		<div id="tab4" ng-if="vm.default_tab==4">
+																				<div class="shirt-picture">
+																						<img image-spinner ng-src={{vm.imageURL}}{{vm.selectedShirt.image_right_url}} width="{{vm.selectedShirt.width}}" height="{{vm.selectedShirt.height}}" ng-style="{'background':vm.shirt_color}" alt="image description">
+																				</div>
+																		</div>
+																</div>
+
+																<div class="printable-holder" ng-style="{top:top_position+'px',left:left_position+'px'}">
+																		<div id="test2" class="printable-area" ng-style="{width:width_position+'px',height:height_position+'px'}" style="padding:0;" ng-show="vm.is_printable_area_visible" ng-init="vm.hold_display();">
+
+																				<div ng-show="vm.default_tab === 1" id="dragable{{text.z_index}}" class="parent front2" ng-repeat="text in vm.front_design">
+																						<!--{{text}}-->
+																						<div ng-attr-style="{{text.style}}" style="{{text.style}}" class="user-box" id="box{{text.z_index}}front" on-drag-end="vm.onDragEnd(rotation)" on-drag="vm.onDrag(rotation)" style="-webkit-user-select: none;">
+																								<svg ng-if="text.type=='text' && vm.default_tab==1"
+																										 xmlns="http://www.w3.org/2000/svg"
+																										 ng-attr-width="{{text.svg_text_width}}"
+																										 ng-attr-height="{{text.svg_text_height}}"
+																										 vbox="{{text.viewBox}}"
+																										 ng-attr-style="{{text.svg_style}}"
+																										 preserveAspectRatio="none">
+																										<g id="2.34">
+																												<text ng-y="{{text.text_y}}" fill="{{text.color}}" ng-if="text.type=='text'"  ng-style="{'font-family':text.font}" font-size="{{text.text_font_size}}" stroke-linecap="{{text.stroke_lineup}}" stroke-linejoin="{{text.stroke_linejoin}}" stroke="{{text.stroke}}" stroke-width="{{text.stroke_width}}" ng-attr-style="{{text.text_style}}">
+																														<tspan ng-x="{{tspan.tspan_x}}" ng-attr-y="{{tspan.tspan_y}}" ng-dy="{{tspan.tspan_dy}}" ng-repeat="tspan in text.tspans">
+																																{{tspan.text}}
+																														</tspan>
+																												</text>
+																										</g>
+																								</svg>
+																								<svg ng-if="text.type=='svg' && vm.default_tab==1"
+																										 xmlns="http://www.w3.org/2000/svg"
+																										 preserveAspectRatio="none"
+																										 vbox="{{text.viewBox}}"
+																										 ng-attr-style="{{text.svg_style}}"
+																										 ng-attr-width="{{text.svg_resized_width}}"
+																										 ng-attr-height="{{text.svg_resized_height}}">
+																										<defs>
+																												<clipPath id="cut-off-bottom">
+																														<rect x="0" y="0" width="220" height="330" />
+																												</clipPath>
+																										</defs>
+																										<g id="global">
+																												<image  xlink:href={{trustSrc(text.src)}} x="0" y="20" ng-height="{{text.height}}" ng-width="{{text.width}}" />
+																										</g>
+																								</svg>
+																								<svg class="svgimg"
+																										 ng-if="text.type=='img' && vm.default_tab===1"
+																										 preserveAspectRatio = "none"
+																										 ng-attr-height = "{{text.img_height}}"
+																										 ng-attr-width = "{{text.img_width}}"
+																										 vbox = "{{text.viewBox}}"
+																										 xmlns = "http://www.w3.org/2000/svg"
+																										 xml:space = "preserve"
+																										 ng-attr-style = "{{text.svg_style}}"
+																										 xmlns:xlink = "http://www.w3.org/1999/xlink">
+																										<g>
+																											<image  x="0" y="0"
+																														 ng-height="{{text.height}}"
+																														 ng-width="{{text.width}}"
+																														 xlink:href={{trustSrc(text.src)}}>
+																											</image>
+																										</g>
+																								</svg>
+																								<ul tw-click-outside="vm.deselectLayer()" class="user-list" id="tools{{text.z_index}}front" style="visibility:hidden">
+																										<li class="delete">
+																												<a href="" class="icon">
+																														<i class="icon-expand-01" id="resize{{text.z_index}}front"></i>
+																												</a>
+																												<span class="popup">Resize</span>
+																										</li>
+																										<li class="zoom">
+																												<a href="" class="icon">
+																														<i class="icon-drag-01"></i>
+																												</a>
+																												<span class="popup">Drag</span>
+																										</li>
+																										<!--<li class="rotate">
+																												<a href="" class="icon">
+																														<i class="icon-rotate-free"></i>
+																												</a>
+																												<span class="popup">Rotate</span>
+																										</li>-->
+																										<li class="drag">
+																												<a href="" class="icon" ng-click="vm.deleteLayer(text.z_index)">
+																														<i class="icon-trash-01"></i>
+																												</a>
+																												<span class="popup">Delete</span>
+																										</li>
+																								</ul>
+
+																								<ul class="handler" style="visibility:hidden">
+																										<li class="first"></li>
+																										<li class="second"></li>
+																										<li class="third"></li>
+																										<li class="four"></li>
+																								</ul>
+																						</div>
+																				</div>
+																				<div id="dragable{{text.z_index}}" class="parent back2" ng-show="vm.default_tab==2" ng-repeat="text in vm.back_design">
+																						<div ng-attr-style="{{text.style}}" class="user-box" id="box{{text.z_index}}back" on-drag-end="vm.onDragEnd(rotation)" on-drag="vm.onDrag(rotation)" style="-webkit-user-select: none;">
+																							<svg ng-if="text.type=='text' && vm.default_tab==2"
+																									 xmlns="http://www.w3.org/2000/svg"
+																									 ng-attr-width="{{text.svg_text_width}}"
+																									 ng-attr-height="{{text.svg_text_height}}"
+																									 vbox="{{text.viewBox}}"
+																									 ng-attr-style="{{text.svg_style}}"
+																									 preserveAspectRatio="none">
+																									<g id="2.34">
+																											<text ng-y="{{text.text_y}}" fill="{{text.color}}" ng-if="text.type=='text'"  ng-style="{'font-family':text.font}" font-size="{{text.text_font_size}}" stroke-linecap="{{text.stroke_lineup}}" stroke-linejoin="{{text.stroke_linejoin}}" stroke="{{text.stroke}}" stroke-width="{{text.stroke_width}}" ng-attr-style="{{text.text_style}}">
+																													<tspan ng-x="{{tspan.tspan_x}}" ng-attr-y="{{tspan.tspan_y}}" ng-dy="{{tspan.tspan_dy}}" ng-repeat="tspan in text.tspans">
+																															{{tspan.text}}
+																													</tspan>
+																											</text>
+																									</g>
+																							</svg>
+																							<svg ng-if="text.type=='svg' && vm.default_tab==2"
+																									 xmlns="http://www.w3.org/2000/svg"
+																									 preserveAspectRatio="none"
+																									 vbox="{{text.viewBox}}"
+																									 ng-attr-style="{{text.svg_style}}"
+																									 ng-attr-width="{{text.svg_resized_width}}"
+																									 ng-attr-height="{{text.svg_resized_height}}">
+																									<defs>
+																											<clipPath id="cut-off-bottom">
+																													<rect x="0" y="0" width="220" height="330" />
+																											</clipPath>
+																									</defs>
+																									<g id="global">
+																											<image  xlink:href={{trustSrc(text.src)}} x="0" y="20" ng-height="{{text.height}}" ng-width="{{text.width}}" />
+																									</g>
+																							</svg>
+																							<svg class="svgimg"
+																									 ng-if="text.type=='img' && vm.default_tab===2"
+																									 preserveAspectRatio = "none"
+																									 ng-attr-height = "{{text.img_height}}"
+																									 ng-attr-width = "{{text.img_width}}"
+																									 vbox = "{{text.viewBox}}"
+																									 xmlns = "http://www.w3.org/2000/svg"
+																									 xml:space = "preserve"
+																									 ng-attr-style = "{{text.svg_style}}"
+																									 xmlns:xlink = "http://www.w3.org/1999/xlink">
+																									<g>
+																										<image  x="0" y="0"
+																													 ng-height="{{text.height}}"
+																													 ng-width="{{text.width}}"
+																													 xlink:href={{trustSrc(text.src)}}>
+																										</image>
+																									</g>
+																							</svg>
+																								<ul tw-click-outside="vm.deselectLayer()" class="user-list" id="tools{{text.z_index}}back" style="visibility:hidden">
+																										<li class="delete">
+																												<a href="" class="icon">
+																														<i class="icon-expand-01" id="resize{{text.z_index}}back"></i>
+																												</a>
+																												<span class="popup">Resize</span>
+																										</li>
+																										<li class="zoom">
+																												<a href="" class="icon">
+																														<i class="icon-drag-01"></i>
+																												</a>
+																												<span class="popup">Drag</span>
+																										</li>
+																										<!--<li class="rotate">
+																												<a href="" class="icon">
+																														<i class="icon-rotate-free"></i>
+																												</a>
+																												<span class="popup">Rotate</span>
+																										</li>-->
+																										<li class="drag">
+																												<a href="" class="icon" ng-click="vm.deleteLayer(text.z_index)">
+																														<i class="icon-trash-01"></i>
+																												</a>
+																												<span class="popup">Delete</span>
+																										</li>
+																								</ul>
+
+																								<ul class="handler" style="visibility:hidden">
+																										<li class="first"></li>
+																										<li class="second"></li>
+																										<li class="third"></li>
+																										<li class="four"></li>
+																								</ul>
+																						</div>
+																				</div>
+																				<div id="dragable{{text.z_index}}" class="parent left2" ng-show="vm.default_tab==3" ng-repeat="text in vm.left_design">
+																						<div ng-attr-style="{{text.style}}" class="user-box" id="box{{text.z_index}}left" on-drag-end="vm.onDragEnd(rotation)" on-drag="vm.onDrag(rotation)" style="-webkit-user-select: none;">
+																							<svg ng-if="text.type=='text' && vm.default_tab==3"
+																									 xmlns="http://www.w3.org/2000/svg"
+																									 ng-attr-width="{{text.svg_text_width}}"
+																									 ng-attr-height="{{text.svg_text_height}}"
+																									 vbox="{{text.viewBox}}"
+																									 ng-attr-style="{{text.svg_style}}"
+																									 preserveAspectRatio="none">
+																									<g id="2.34">
+																											<text ng-y="{{text.text_y}}" fill="{{text.color}}" ng-if="text.type=='text'"  ng-style="{'font-family':text.font}" font-size="{{text.text_font_size}}" stroke-linecap="{{text.stroke_lineup}}" stroke-linejoin="{{text.stroke_linejoin}}" stroke="{{text.stroke}}" stroke-width="{{text.stroke_width}}" ng-attr-style="{{text.text_style}}">
+																													<tspan ng-x="{{tspan.tspan_x}}" ng-attr-y="{{tspan.tspan_y}}" ng-dy="{{tspan.tspan_dy}}" ng-repeat="tspan in text.tspans">
+																															{{tspan.text}}
+																													</tspan>
+																											</text>
+																									</g>
+																							</svg>
+																								<svg class="svgimg"
+																										 ng-if="text.type=='img' && vm.default_tab===3"
+																										 preserveAspectRatio = "none"
+																										 ng-attr-height = "{{text.img_height}}"
+																										 ng-attr-width = "{{text.img_width}}"
+																										 vbox = "{{text.viewBox}}"
+																										 xmlns = "http://www.w3.org/2000/svg"
+																										 xml:space = "preserve"
+																										 ng-attr-style = "{{text.svg_style}}"
+																										 xmlns:xlink = "http://www.w3.org/1999/xlink">
+																										<g>
+																											<image  x="0" y="0"
+																														 ng-height="{{text.height}}"
+																														 ng-width="{{text.width}}"
+																														 xlink:href={{trustSrc(text.src)}}>
+																											</image>
+																										</g>
+																								</svg>
+																								<svg ng-if="text.type=='svg' && vm.default_tab==3"
+																										 xmlns="http://www.w3.org/2000/svg"
+																										 preserveAspectRatio="none"
+																										 vbox="{{text.viewBox}}"
+																										 ng-attr-style="{{text.svg_style}}"
+																										 ng-attr-width="{{text.svg_resized_width}}"
+																										 ng-attr-height="{{text.svg_resized_height}}">
+																										<defs>
+																												<clipPath id="cut-off-bottom">
+																														<rect x="0" y="0" width="220" height="330" />
+																												</clipPath>
+																										</defs>
+																										<g id="global">
+																												<image  xlink:href={{trustSrc(text.src)}} x="0" y="20" ng-height="{{text.height}}" ng-width="{{text.width}}" />
+																										</g>
+																								</svg>
+																								<ul tw-click-outside="vm.deselectLayer()" class="user-list" id="tools{{text.z_index}}left" style="visibility:hidden">
+																										<li class="delete">
+																												<a href="" class="icon">
+																														<i class="icon-expand-01" id="resize{{text.z_index}}left"></i>
+																												</a>
+																												<span class="popup">Resize</span>
+																										</li>
+																										<li class="zoom">
+																												<a href="" class="icon">
+																														<i class="icon-drag-01"></i>
+																												</a>
+																												<span class="popup">Drag</span>
+																										</li>
+																										<!--<li class="rotate">
+																												<a href="" class="icon">
+																														<i class="icon-rotate-free"></i>
+																												</a>
+																												<span class="popup">Rotate</span>
+																										</li>-->
+																										<li class="drag">
+																												<a href="" class="icon" ng-click="vm.deleteLayer(text.z_index)">
+																														<i class="icon-trash-01"></i>
+																												</a>
+																												<span class="popup">Delete</span>
+																										</li>
+																								</ul>
+
+
+																								<ul class="handler" style="visibility:hidden">
+																										<li class="first"></li>
+																										<li class="second"></li>
+																										<li class="third"></li>
+																										<li class="four"></li>
+																								</ul>
+																						</div>
+																				</div>
+
+																				<div id="dragable{{text.z_index}}" class="parent right" ng-show="vm.default_tab==4" ng-repeat="text in vm.right_design">
+																						<div ng-attr-style="{{text.style}}" class="user-box" id="box{{text.z_index}}right" on-drag-end="vm.onDragEnd(rotation)" on-drag="vm.onDrag(rotation)" style="-webkit-user-select: none;">
+																							<svg ng-if="text.type=='text' && vm.default_tab==4"
+																									 xmlns="http://www.w3.org/2000/svg"
+																									 ng-attr-width="{{text.svg_text_width}}"
+																									 ng-attr-height="{{text.svg_text_height}}"
+																									 vbox="{{text.viewBox}}"
+																									 ng-attr-style="{{text.svg_style}}"
+																									 preserveAspectRatio="none">
+																									<g id="2.34">
+																											<text ng-y="{{text.text_y}}" fill="{{text.color}}" ng-if="text.type=='text'"  ng-style="{'font-family':text.font}" font-size="{{text.text_font_size}}" stroke-linecap="{{text.stroke_lineup}}" stroke-linejoin="{{text.stroke_linejoin}}" stroke="{{text.stroke}}" stroke-width="{{text.stroke_width}}" ng-attr-style="{{text.text_style}}">
+																													<tspan ng-x="{{tspan.tspan_x}}" ng-attr-y="{{tspan.tspan_y}}" ng-dy="{{tspan.tspan_dy}}" ng-repeat="tspan in text.tspans">
+																															{{tspan.text}}
+																													</tspan>
+																											</text>
+																									</g>
+																							</svg>
+
+																							<svg ng-if="text.type=='svg' && vm.default_tab==4"
+																									 xmlns="http://www.w3.org/2000/svg"
+																									 preserveAspectRatio="none"
+																									 vbox="{{text.viewBox}}"
+																									 ng-attr-style="{{text.svg_style}}"
+																									 ng-attr-width="{{text.svg_resized_width}}"
+																									 ng-attr-height="{{text.svg_resized_height}}">
+																									<defs>
+																											<clipPath id="cut-off-bottom">
+																													<rect x="0" y="0" width="220" height="330" />
+																											</clipPath>
+																									</defs>
+																									<g id="global">
+																											<image  xlink:href={{trustSrc(text.src)}} x="0" y="20" ng-height="{{text.height}}" ng-width="{{text.width}}" />
+																									</g>
+																							</svg>
+																							<svg class="svgimg"
+																									 ng-if="text.type=='img' && vm.default_tab===4"
+																									 preserveAspectRatio = "none"
+																									 ng-attr-height = "{{text.img_height}}"
+																									 ng-attr-width = "{{text.img_width}}"
+																									 vbox = "{{text.viewBox}}"
+																									 xmlns = "http://www.w3.org/2000/svg"
+																									 xml:space = "preserve"
+																									 ng-attr-style = "{{text.svg_style}}"
+																									 xmlns:xlink = "http://www.w3.org/1999/xlink">
+																									<g>
+																										<image  x="0" y="0"
+																													 ng-height="{{text.height}}"
+																													 ng-width="{{text.width}}"
+																													 xlink:href={{trustSrc(text.src)}}>
+																										</image>
+																									</g>
+																							</svg>
+																								<ul tw-click-outside="vm.deselectLayer()" class="user-list" id="tools{{text.z_index}}right" style="visibility:hidden">
+																										<li class="delete">
+																												<a href="" class="icon">
+																														<i class="icon-expand-01" id="resize{{text.z_index}}right"></i>
+																												</a>
+																												<span class="popup">Resize</span>
+																										</li>
+																										<li class="zoom">
+																												<a href="" class="icon">
+																														<i class="icon-drag-01"></i>
+																												</a>
+																												<span class="popup">Drag</span>
+																										</li>
+																										<!--<li class="rotate">
+																												<a href="" class="icon">
+																														<i class="icon-rotate-free"></i>
+																												</a>
+																												<span class="popup">Rotate</span>
+																										</li>-->
+																										<li class="drag">
+																												<a href="" class="icon" ng-click="vm.deleteLayer(text.z_index)">
+																														<i class="icon-trash-01"></i>
+																												</a>
+																												<span class="popup">Delete</span>
+																										</li>
+																								</ul>
+
+
+																								<ul class="handler" style="visibility:hidden">
+																										<li class="first"></li>
+																										<li class="second"></li>
+																										<li class="third"></li>
+																										<li class="four"></li>
+																								</ul>
+																						</div>
+																				</div>
+																				<div class="zoom-view invisible">
+																						<div class="view">
+																								<img src="images/img12.jpg" width="194" height="194" alt="image description">
+																						</div>
+																						<div class="icon">
+																								<i class="icon-zoom-01"></i>
+																						</div>
+																				</div>
+																				<span class="visual-text">Printable Area</span>
+																		</div>
+																</div>
+														</div>
+												</div>
+
+					</div>
+
+				</div>
+			</div>
+			<form name="launch_form" class="compaign-form">
+				<fieldset>
+					<div class="field-item">
+						<label class="title" for="compaign"><span class="red_item"> * </span> Name your Campaign</label>
+
+						<input maxlength="50" type="text" id="compaign" ng-model="vm.compaign_title" ng-change="vm.build_url()" required>
+
+					</div>
+					<div class="field-item">
+						<div class="head">
+							<strong class="title about_campaign">What's your Campaign about?</strong>
+							<ul class="select-option" style="display:none;">
+								<li><a class="bold" href="#">B</a></li>
+								<li><a class="italic" href="#">I</a></li>
+								<li><a class="underline" href="#">U</a></li>
+								<li><a class="link" href="#"><i class="icon-link"></i></a></li>
+								<li><a class="image" href="#"><i class="icon-image"></i></a></li>
+							</ul>
+						</div>
+						<textarea maxlength="1000" name="htmlcontent" ng-model="$parent.desc" ng-focus="vm.show_toolbar()" ng-blur="vm.hide_toolbar()"> </textarea>
+
+					</div>
+					<div class="field-item">
+						<strong class="title"> <span class="red_item"> * </span>Categories</strong>
+
+						<span class="fake-list color">
+									<select ng-options="category.id as category.name for category in vm.categories" id="category" ng-model="vm.description.category" required>
+
+									</select>
+								</span>
+					</div>
+					<div class="field-item">
+						<strong class="title">Tag It!</strong>
+						<p>Its best to add upto 5 tags to improve your campaign visibility</p>
+						<div class="auto-complete">
+
+							<div class="field-holder">
+								<input type="text" maxlength="20" placeholder="Separate tags with Enter or comma" ng-model="vm.raw_tags" ng-keyup="vm.extract_tags($event)" ng-blur="vm.extract_tag_on_blur($event)">
+							</div>
+						</div>
+					</div>
+					<!--<div class="field-item">
+						<strong class="tag" ng-repeat="tag in vm.tags track by $index">{{tag}} <button type="button" class="close" aria-label="Close" style="position:relative;left:10%;" ng-click="vm.remove_tag($index)">
+                    <span aria-hidden="true">×</span>
+                </button> </strong>
+
+					</div>-->
+					<div class="field-item"  ng-repeat="tag in vm.tags track by $index">
+						<span class="tag-token">
+						<span class="">{{tag}}</span>
+						<a class="remove_tag" href="" role="button" aria-label="Remove Abdul Basit" title="Remove" ng-click="vm.remove_tag($index)"> <span class="fa fa-close remove_tag_btn">  </span> </a></span>
+						</div>
+
+		<div class="field-item" style="margin-top:12%;margin-bottom: .5em;">
+			<strong class="title_url"> <span class="red_item"> * </span> Campaign Duration</strong>
+			<span class="fake-list add">
+
+									<select ng-model="vm.compaign_length" id="campaign_length" name="campaign_length" required>
+							            <option ng-repeat="day in vm.time_array" ng-if="$index+7 == 7 || $index+7 == 11 || $index+7 == 21 || $index+7 == 17" value="{{$index+7}}"> {{$index+7}} Days ({{day | date: 'fullDate'}}) </option>
+                                    </select>
+								</span>
+		</div>
+
+		<div class="field-item">
+			<label for="url" class="title_url"><span class="red_item"> * </span>URL</label>
+			<p>People can view your campaign through this unique URL </p>
+			<div class="url-box">
+				<strong class="url-name">teedesign.ae/</strong>
+				<div class="input-holder">
+					<input type="text" id="url" class="url" name="url" ng-model="vm.url" ng-change="vm.validate_url()" required>
+				</div>
+			</div>
+
+		</div>
+		<div class="field-item">
+						<span ng-if="vm.url_available && !vm.is_loading_url"> URL is available </span>
+						<span ng-if="!vm.url_available && !vm.is_loading_url"> Unfortunately, URL is unavaiable, please try changing URL. </span>
+						<span ng-if="vm.is_loading_url"> <i class="fa fa-spinner fa-spin fa-fw"></i> Verifying URL </span>
+
+					</div>
+
+
+		<div class="row" style="margin-left: 0%;"> NOTE: Fields marked with <span class="red_item"> * </span> are required. </div>
+	<div class="row text-center"> <button ng-disabled="launch_form.$invalid || !(vm.url.length) || !(vm.compaign_length.length) || !vm.url_available || vm.is_loading_url" class="btn btn-danger btn-lg form-group" ui-sref="home.description" style="margin-top:2%;" ng-click="vm.launch_compaign()">  LAUNCH </button> </div>
+	</div>
+	</div>
+
+	</fieldset>
+		</form>
+</main>
